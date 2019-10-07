@@ -5,7 +5,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY result/bin)
 
 project(PROJECT)
 
-find_package (Threads)
+find_package(Threads)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -19,10 +19,11 @@ set("${PROJECT}_SRC"
 
 if (UNIX)
 set("${PROJECT}_PLATFORM"
-  osis_threads/platform/src/linux/mutex.c  
+  osis_threads/platform/src/linux/mutex.c 
+  osis_threads/platform/src/linux/osis_main.c 
 )
 endif(UNIX)
 
 add_executable(${PROJECT} ${${PROJECT}_SRC} ${${PROJECT}_PLATFORM})
 
-target_link_libraries (${PROJECT} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(${PROJECT} ${CMAKE_THREAD_LIBS_INIT})

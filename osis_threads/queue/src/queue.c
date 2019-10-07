@@ -3,7 +3,7 @@
 #include <malloc.h>
 #include <stdlib.h>
 
-typedef  struct Cell Cell;
+typedef struct Cell Cell;
 
 struct Cell
 {
@@ -84,11 +84,11 @@ Queue* InitQueue(void)
     queue.cells_count = 0;
     queue.is_active = true;
 
-    queue.core.PushBlob = PushBlob;
-    queue.core.PopBlob = PopBlob;
-    queue.core.Size = Size;
-    queue.core.SetActive = SetActive;
-    queue.core.IsActive = IsActive;
+    queue.core.PushBlob     = PushBlob;
+    queue.core.PopBlob      = PopBlob;
+    queue.core.Size         = Size;
+    queue.core.SetActive    = SetActive;
+    queue.core.IsActive     = IsActive;
     
     return &queue.core;
 }
