@@ -1,6 +1,7 @@
 #include <osis_threads/threads/threads.h>
 #include <osis_threads/queue/queue.h>
 #include <osis_threads/blob/blob.h>
+#include <osis_threads/settings/settings.h>
 
 void* ReadThread(void* pqueue)
 {
@@ -8,9 +9,9 @@ void* ReadThread(void* pqueue)
 
     while (true)
     {
-        Blob* blob = InitBlob(1);
+        Blob* blob = InitBlob();
         size_t read_bits = ReadBlob(blob);
-        if (read_bits && read_bits == blob->buf_size)
+        if (read_bits && read_bits == GetBufSize())
         {
             queue->mutex->Lock();
             queue->PushBlob(blob);

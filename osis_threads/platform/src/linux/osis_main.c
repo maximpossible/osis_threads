@@ -1,5 +1,4 @@
 #include <osis_threads/platform/osis_main.h>
-#include <osis_threads/settings/settings.h>
 #include <osis_threads/queue/queue.h>
 #include <osis_threads/threads/threads.h>
 
@@ -7,11 +6,6 @@
 
 int OsisMain(int argc, const char** argv)
 {
-    if (!InitSettings(argc, (const char**)argv))
-    {
-        return 1;
-    }
-
     Queue* queue = InitQueue();
 
     pthread_t read_thread;

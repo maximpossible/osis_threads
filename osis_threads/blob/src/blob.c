@@ -3,22 +3,21 @@
 
 #include <malloc.h>
 
-Blob* InitBlob(size_t size)
+Blob* InitBlob(void)
 {
     Blob* blob = (Blob*)malloc(sizeof(Blob));
-    blob->buf = malloc(sizeof(void*));
-    blob->buf_size = size;
+    blob->buf = malloc(sizeof(GetBufSize()));
     return blob;
 }
 
 ssize_t ReadBlob(Blob* blob)
 {
-    return fread(blob->buf, blob->buf_size, 1, GetDataFile());
+    return fread(blob->buf, GetBufSize(), 1, GetDataFile());
 }
 
 ssize_t WriteBlob(Blob* blob)
 {
-    fwrite(blob->buf, blob->buf_size, 1, GetOutFile());
+    fwrite(blob->buf, GetBufSize(), 1, GetOutFile());
 }
 
 void DestroyBlob(void* pblob)

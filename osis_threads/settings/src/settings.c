@@ -1,10 +1,6 @@
-/* 
-    TODO: Количество за раз считываемых байт лучше парсить и хранить
-    в этой структуре, получая доступ через GetBufSize()
-*/
-
 #include <osis_threads/settings/settings.h>
 
+#include <stdlib.h>
 #include <errno.h>
 
 static struct
@@ -12,14 +8,21 @@ static struct
     const char* path;
     FILE* input_fd;
     FILE* output_fd;
+    size_t buf_size;
 } settings;
 
 static const char* ParseArgs(int argc, const char** argv)
 {
-    if (argc == 1)
+    if (argc == 1 || argc > 3)
     {
-        printf("Error. Not enough arguments\n");
+        printf("%s datafile [bytes_in_buffer]\n", argv[0]);
         return NULL;
+    }
+
+    settings.buf_size = 0;
+    if (argc == 3)
+    {
+        settings.buf_size = atoi(argv[2]);
     }
 
     return argv[1];
@@ -28,6 +31,11 @@ static const char* ParseArgs(int argc, const char** argv)
 bool InitSettings(int argc, const char** argv)
 {
     settings.path = ParseArgs(argc, argv);
+    if (!settings.buf_size)
+    {
+        settings.buf_size = 1;
+    }
+
     settings.input_fd = fopen(settings.path, "rb");
     if (NULL == settings.input_fd)
     {
@@ -58,4 +66,9 @@ FILE* GetDataFile(void)
 FILE* GetOutFile(void)
 {
     return settings.output_fd;
+}
+
+size_t GetBufSize(void)
+{
+    return settings.buf_size;
 }

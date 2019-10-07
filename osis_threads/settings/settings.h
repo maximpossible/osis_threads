@@ -8,5 +8,6 @@ bool InitSettings(int argc, const char** argv);
 const char* GetPathString(void);
 FILE* GetDataFile(void);
 FILE* GetOutFile(void);
+size_t GetBufSize(void);
 
 #endif

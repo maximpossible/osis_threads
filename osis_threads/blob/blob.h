@@ -7,10 +7,9 @@
 typedef struct
 {
     void* buf;
-    size_t buf_size;
 } Blob;
 
-Blob* InitBlob(size_t size);
+Blob* InitBlob(void);
 ssize_t ReadBlob(Blob* blob);
 ssize_t WriteBlob(Blob* blob);
 void DestroyBlob(void* pblob);
