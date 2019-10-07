@@ -17,7 +17,7 @@ ssize_t ReadBlob(Blob* blob)
 
 ssize_t WriteBlob(Blob* blob)
 {
-    fwrite(blob->buf, GetBufSize(), 1, GetOutFile());
+    return fwrite(blob->buf, GetBufSize(), 1, GetOutFile());
 }
 
 void DestroyBlob(void* pblob)

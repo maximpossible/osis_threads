@@ -10,8 +10,8 @@ void* ReadThread(void* pqueue)
     while (true)
     {
         Blob* blob = InitBlob();
-        size_t read_bits = ReadBlob(blob);
-        if (read_bits && read_bits == GetBufSize())
+        size_t read_bytes = ReadBlob(blob);
+        if (read_bytes && read_bytes == GetBufSize())
         {
             queue->mutex->Lock();
             queue->PushBlob(blob);
@@ -22,10 +22,10 @@ void* ReadThread(void* pqueue)
             queue->mutex->Lock();
             queue->SetActive(false);
             queue->mutex->Unlock();
-            return NULL;
+            break;
         }
     }
-  
+
     return NULL;
 }
 
@@ -45,7 +45,7 @@ void* WriteThread(void* pqueue)
 
         if (0 == queue->Size() && false == queue->IsActive())
         {
-            return NULL;
+            break;
         }
     }
 
