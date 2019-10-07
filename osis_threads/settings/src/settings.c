@@ -1,19 +1,17 @@
 /* 
-    TODO: Либо вынести платфоромзависимую часть, 
-    либо использовать стандартную библиотеку 
+    TODO: Количество за раз считываемых байт лучше парсить и хранить
+    в этой структуре, получая доступ через GetBufSize()
 */
 
 #include <osis_threads/settings/settings.h>
 
-#include <stdio.h>
-#include <fcntl.h>
 #include <errno.h>
 
 static struct
 {
     const char* path;
-    int input_fd;
-    int output_fd;
+    FILE* input_fd;
+    FILE* output_fd;
 } settings;
 
 static const char* ParseArgs(int argc, const char** argv)
@@ -30,15 +28,15 @@ static const char* ParseArgs(int argc, const char** argv)
 bool InitSettings(int argc, const char** argv)
 {
     settings.path = ParseArgs(argc, argv);
-    settings.input_fd = open(settings.path, O_RDONLY);
-    if (-1 == settings.input_fd)
+    settings.input_fd = fopen(settings.path, "rb");
+    if (NULL == settings.input_fd)
     {
         printf("File %s can not be opened! Error %d\n", settings.path, errno);
         return false;
     }
 
-    settings.output_fd = creat("out", S_IRWXU);
-    if (-1 == settings.input_fd)
+    settings.output_fd = fopen("out", "wb");
+    if (NULL == settings.input_fd)
     {
         printf("File \'out\' can not be opened!\n");
         return false;
@@ -52,12 +50,12 @@ const char* GetPathString(void)
     return settings.path;
 }
 
-int GetDataFile(void)
+FILE* GetDataFile(void)
 {
     return settings.input_fd;
 }
 
-int GetOutFile(void)
+FILE* GetOutFile(void)
 {
     return settings.output_fd;
 }

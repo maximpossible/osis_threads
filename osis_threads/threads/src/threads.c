@@ -8,9 +8,9 @@ void* ReadThread(void* pqueue)
 
     while (true)
     {
-        Blob* blob = InitBlob(8);
-        ssize_t read_bits = ReadBlob(blob);
-        if (read_bits)
+        Blob* blob = InitBlob(1);
+        size_t read_bits = ReadBlob(blob);
+        if (read_bits && read_bits == blob->buf_size)
         {
             queue->mutex->Lock();
             queue->PushBlob(blob);

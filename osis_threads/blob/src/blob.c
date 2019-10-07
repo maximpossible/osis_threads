@@ -13,12 +13,12 @@ Blob* InitBlob(size_t size)
 
 ssize_t ReadBlob(Blob* blob)
 {
-    return read(GetDataFile(), blob->buf, blob->buf_size);
+    return fread(blob->buf, blob->buf_size, 1, GetDataFile());
 }
 
 ssize_t WriteBlob(Blob* blob)
 {
-    return write(GetOutFile(), blob->buf, blob->buf_size);
+    fwrite(blob->buf, blob->buf_size, 1, GetOutFile());
 }
 
 void DestroyBlob(void* pblob)
