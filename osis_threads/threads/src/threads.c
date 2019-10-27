@@ -3,7 +3,7 @@
 #include <osis_threads/blob/blob.h>
 #include <osis_threads/settings/settings.h>
 
-void* ReadThread(void* pqueue)
+void* ReadThreadMutex(void* pqueue)
 {
     Queue* queue = (Queue*)pqueue;
 
@@ -29,7 +29,7 @@ void* ReadThread(void* pqueue)
     return NULL;
 }
 
-void* WriteThread(void* pqueue)
+void* WriteThreadMutex(void* pqueue)
 {
     Queue* queue = (Queue*)pqueue;
 
@@ -40,6 +40,57 @@ void* WriteThread(void* pqueue)
             queue->mutex->Lock();
             Blob* blob = queue->PopBlob();
             queue->mutex->Unlock();
+            WriteBlob(blob);
+        }
+
+        if (0 == queue->Size() && false == queue->IsActive())
+        {
+            break;
+        }
+    }
+
+    return NULL;
+}
+
+// Semaphores
+
+void* ReadThreadSemaphore(void* pqueue)
+{
+    Queue* queue = (Queue*)pqueue;
+
+    while (true)
+    {
+        Blob* blob = InitBlob();
+        size_t read_bytes = ReadBlob(blob);
+        if (read_bytes && read_bytes == GetBufSize())
+        {
+            queue->semaphore->Wait();
+            queue->PushBlob(blob);
+            queue->semaphore->Post();
+        }
+        else
+        {
+            queue->semaphore->Wait();
+            queue->SetActive(false);
+            queue->semaphore->Post();
+            break;
+        }
+    }
+
+    return NULL;
+}
+
+void* WriteThreadSemaphore(void* pqueue)
+{
+    Queue* queue = (Queue*)pqueue;
+
+    while (true)
+    {
+        if (queue->Size())
+        {
+            queue->semaphore->Wait();
+            Blob* blob = queue->PopBlob();
+            queue->semaphore->Post();
             WriteBlob(blob);
         }
 

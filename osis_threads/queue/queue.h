@@ -2,6 +2,7 @@
 #define QUEUE_H
 
 #include <osis_threads/platform/mutex.h>
+#include <osis_threads/platform/semaphore.h>
 #include <osis_threads/blob/blob.h>
 
 #include <stdbool.h>
@@ -15,6 +16,7 @@ typedef struct
     bool (*IsActive)(void);
 
     Mutex* mutex;
+    Semaphore* semaphore;
 } Queue;
 
 Queue* InitQueue(void);

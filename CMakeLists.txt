@@ -20,6 +20,7 @@ set("${PROJECT}_SRC"
 if (UNIX)
 set("${PROJECT}_PLATFORM"
   osis_threads/platform/src/linux/mutex.c 
+  osis_threads/platform/src/linux/semaphore.c 
   osis_threads/platform/src/linux/osis_main.c 
 )
 endif(UNIX)

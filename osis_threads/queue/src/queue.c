@@ -79,6 +79,7 @@ static bool IsActive(void)
 Queue* InitQueue(void)
 {
     queue.core.mutex = InitMutex();
+    queue.core.semaphore = InitSemaphore();
 
     queue.head = NULL;
     queue.cells_count = 0;
@@ -108,7 +109,11 @@ void DestroyQueue(Queue* pqueue)
     {
         DestroyMutex(queue.core.mutex);
     }
-
+    if (queue.core.semaphore)
+    {
+        DestroySemaphore(queue.core.semaphore);
+    }
+    
     Cell* next_cell;
     Cell* curr_cell = queue.head;
     while (curr_cell)
