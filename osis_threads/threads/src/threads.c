@@ -52,8 +52,6 @@ void* WriteThreadMutex(void* pqueue)
     return NULL;
 }
 
-// Semaphores
-
 void* ReadThreadSemaphore(void* pqueue)
 {
     Queue* queue = (Queue*)pqueue;
