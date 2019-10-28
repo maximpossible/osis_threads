@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <pthread.h>
+#include <malloc.h>
 
 int OsisMain(int argc, const char** argv)
 {
@@ -12,21 +13,22 @@ int OsisMain(int argc, const char** argv)
     pthread_t read_thread;
     pthread_t write_thread;
 
-    int chose;
+    char chose;
     do
     {
         printf("Select synchronization primitive:\n");
         printf("1. Mutex\n");
         printf("2. Semaphore\n");
+        printf("\n");
+        printf("Choice: ");
 
         chose = getchar();
         if (chose >= '1' && chose <= '2')
         {
             break;
         }
-    } while (true);
+    } while ((chose = getchar()) == '\n');
 
-    printf("out");
     switch (chose)
     {
     case '1':
