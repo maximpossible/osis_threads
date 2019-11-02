@@ -100,3 +100,55 @@ void* WriteThreadSemaphore(void* pqueue)
 
     return NULL;
 }
+
+void* ReadThreadCond(void* pqueue)
+{
+    Queue* queue = (Queue*)pqueue;
+    while (true)
+    {
+        Blob* blob = InitBlob();
+        size_t read_bytes = ReadBlob(blob);
+        if (read_bytes && read_bytes == GetBufSize())
+        {
+            queue->mutex->Lock();
+            queue->PushBlob(blob);
+            queue->cond->Signal();
+            queue->mutex->Unlock();
+        }
+        else
+        {
+            queue->mutex->Lock();
+            queue->SetActive(false);
+            queue->mutex->Unlock();
+            break;
+        }
+    }
+
+    return NULL;
+}
+
+void* WriteThreadCond(void* pqueue)
+{
+    Queue* queue = (Queue*)pqueue;
+    while (true)
+    {
+        queue->mutex->Lock();
+
+        if(!queue->Size())
+        {
+            queue->cond->Wait(queue->mutex);
+        }
+        
+        Blob* blob = queue->PopBlob();
+        queue->mutex->Unlock();
+        
+        WriteBlob(blob);
+
+        if (0 == queue->Size() && false == queue->IsActive())
+        {
+            break;
+        }
+    }
+
+    return NULL;
+}

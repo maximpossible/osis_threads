@@ -80,6 +80,7 @@ Queue* InitQueue(void)
 {
     queue.core.mutex = InitMutex();
     queue.core.semaphore = InitSemaphore();
+    queue.core.cond = InitCondVar();
 
     queue.head = NULL;
     queue.cells_count = 0;
@@ -112,6 +113,10 @@ void DestroyQueue(Queue* pqueue)
     if (queue.core.semaphore)
     {
         DestroySemaphore(queue.core.semaphore);
+    }
+    if (queue.core.cond)
+    {
+        DestroyCondVar(queue.core.cond);
     }
     
     Cell* next_cell;

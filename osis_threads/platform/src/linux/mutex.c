@@ -19,12 +19,18 @@ static void Unlock(void)
     pthread_mutex_unlock(&mutex.mtx);
 }
 
+static void* Get(void)
+{
+    return (void*)&mutex.mtx;
+}
+
 Mutex* InitMutex(void)
 {
     pthread_mutex_init(&mutex.mtx, NULL);
 
     mutex.core.Lock = Lock;
     mutex.core.Unlock = Unlock;
+    mutex.core.Get = Get;
 
     return &mutex.core;
 }

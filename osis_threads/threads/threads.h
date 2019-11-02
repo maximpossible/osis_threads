@@ -7,4 +7,7 @@ void* WriteThreadMutex(void* pqueue);
 void* ReadThreadSemaphore(void* pqueue);
 void* WriteThreadSemaphore(void* pqueue);
 
+void* ReadThreadCond(void* pqueue);
+void* WriteThreadCond(void* pqueue);
+
 #endif

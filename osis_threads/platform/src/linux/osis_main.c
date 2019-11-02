@@ -19,11 +19,12 @@ int OsisMain(int argc, const char** argv)
         printf("Select synchronization primitive:\n");
         printf("1. Mutex\n");
         printf("2. Semaphore\n");
+        printf("3. Conditional variable\n");
         printf("\n");
         printf("Choice: ");
 
         chose = getchar();
-        if (chose >= '1' && chose <= '2')
+        if (chose >= '1' && chose <= '3')
         {
             break;
         }
@@ -38,6 +39,10 @@ int OsisMain(int argc, const char** argv)
     case '2':
         pthread_create(&read_thread, NULL, ReadThreadSemaphore, queue);
         pthread_create(&write_thread, NULL, WriteThreadSemaphore, queue);
+        break;
+    case '3':
+        pthread_create(&read_thread, NULL, ReadThreadCond, queue);
+        pthread_create(&write_thread, NULL, WriteThreadCond, queue);
         break;
     }
 

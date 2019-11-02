@@ -3,9 +3,11 @@
 
 #include <osis_threads/platform/mutex.h>
 #include <osis_threads/platform/semaphore.h>
+#include <osis_threads/platform/cond_var.h>
 #include <osis_threads/blob/blob.h>
 
 #include <stdbool.h>
+#include <pthread.h>
 
 typedef struct
 {
@@ -17,6 +19,7 @@ typedef struct
 
     Mutex* mutex;
     Semaphore* semaphore;
+    CondVar* cond;
 } Queue;
 
 Queue* InitQueue(void);

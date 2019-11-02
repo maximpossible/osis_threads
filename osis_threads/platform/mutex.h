@@ -5,6 +5,7 @@ typedef struct
 {
     void (*Lock)(void);
     void (*Unlock)(void);
+    void* (*Get)(void);
 } Mutex;
 
 Mutex* InitMutex(void);
